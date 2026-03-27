@@ -116,6 +116,68 @@ header .btn-primary:hover {
     box-shadow: 0 8px 30px rgba(45, 98, 255, 0.34);
 }
 
+.user-dropdown {
+    position: relative;
+}
+
+.user-dropdown button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(29, 42, 80, 0.12);
+    background: #ffffff;
+    color: #1f2a50;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.user-dropdown button img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid rgba(111, 85, 255, 0.25);
+}
+
+.user-dropdown .chevron {
+    font-size: 0.9rem;
+    color: #5e74f2;
+}
+
+.user-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.6rem);
+    display: none;
+    flex-direction: column;
+    min-width: 180px;
+    background: #ffffff;
+    border: 1px solid rgba(29, 42, 80, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 18px 35px rgba(31, 44, 89, 0.14);
+    padding: 0.4rem 0;
+    z-index: 1000;
+}
+
+.user-menu.active {
+    display: flex;
+}
+
+.user-menu a {
+    display: block;
+    padding: 0.85rem 1rem;
+    color: #1f2a50;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    font-weight: 600;
+}
+
+.user-menu a:hover {
+    background: rgba(75, 133, 255, 0.08);
+}
+
 /* Mobile Menu */
 .mobile-menu {
     display: none;
@@ -357,14 +419,14 @@ footer .footer-group-title {
 /* -------------------------------------------------------- */
 /* Dashboard Layout and Plan Feature Styles */
 .dashboard {
+    position: relative;
     padding: 3rem 0; 
     display: grid;
     gap: 1.6rem;
 }
 .dashboard-overview {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-    gap: 1rem;
+    display: flex;
+    justify-content: center;
 }
 .profile-card, .stats-card {
     background: rgba(255,255,255,0.9);
@@ -373,6 +435,64 @@ footer .footer-group-title {
     padding: 1.25rem;
     box-shadow: 0 14px 26px rgba(15, 27, 76, 0.11);
 }
+.profile-card {
+    width: min(100%, 620px);
+    text-align: center;
+}
+.dashboard-actions {
+    justify-content: center;
+}
+.dashboard-data {
+    display: grid;
+    gap: 1.25rem;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+.stat-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%);
+    padding: 1.2rem 1.15rem;
+    border: 1px solid rgba(55, 94, 236, 0.16);
+    border-radius: 18px;
+    box-shadow: 0 16px 30px rgba(41, 66, 145, 0.08);
+}
+.stat-card h3 {
+    margin-bottom: 0.8rem;
+    color: #4f5a8f;
+    font-size: 0.98rem;
+}
+.stat-card p {
+    margin: 0;
+    font-size: 2.2rem;
+    color: #1f2a50;
+    font-weight: 800;
+}
+.chart-card {
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(64, 104, 255, 0.14);
+    border-radius: 20px;
+    padding: 1.4rem;
+    box-shadow: 0 18px 36px rgba(21, 34, 105, 0.1);
+}
+.chart-card-header {
+    margin-bottom: 1rem;
+}
+.chart-card-header h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: #1d2a50;
+}
+.chart-card-header p {
+    margin: 0.4rem 0 0;
+    color: #5b6a97;
+}
+.chart-card canvas {
+    width: 100% !important;
+    height: 320px !important;
+}
+
 .profile-card h1 {
     margin: 0.8rem 0 0.4rem;
     font-size: 1.7rem;
@@ -456,6 +576,293 @@ footer .footer-group-title {
     font-size: 0.82rem;
     font-weight: 700;
 }
+
+.account-card-head {
+    margin-bottom: 1.2rem;
+}
+
+.account-identity {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.account-plan-label {
+    margin: 0.4rem 0 0;
+    color: #5e74f2;
+    font-weight: 700;
+}
+
+.account-meta p {
+    margin: 0.6rem 0;
+    color: #4c5b8a;
+    line-height: 1.5;
+}
+
+.link-secondary {
+    display: inline-block;
+    margin-right: 0.85rem;
+    color: #5e74f2;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.link-secondary:hover {
+    text-decoration: underline;
+}
+
+.plan-funnel-card {
+    background: linear-gradient(180deg, #ffffff 0%, #eef3ff 100%);
+    border: 1px solid rgba(81, 110, 220, 0.18);
+    padding: 1.4rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.plan-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(111, 85, 255, 0.12);
+    color: #4b49bb;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.funnel-copy {
+    margin: 0.8rem 0 1.2rem;
+    color: #4f5f8e;
+}
+
+.funnel-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.4rem;
+}
+
+.funnel-list li {
+    margin-bottom: 0.85rem;
+    color: #2b3b72;
+    font-weight: 600;
+}
+
+.funnel-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.dashboard-top,
+.dashboard-stats,
+.dashboard-charts,
+.dashboard-lists {
+    display: grid;
+    gap: 1rem;
+}
+
+.dashboard-top {
+    grid-template-columns: 1.4fr 1fr;
+}
+
+.dashboard-stats {
+    grid-template-columns: 1.9fr 1fr;
+    align-items: start;
+}
+
+.progress-panel {
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(61, 92, 214, 0.14);
+    border-radius: 18px;
+    padding: 1.3rem;
+    box-shadow: 0 16px 34px rgba(24, 41, 98, 0.08);
+}
+
+.progress-panel-header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.progress-track {
+    margin-top: 1rem;
+    background: rgba(111, 85, 255, 0.14);
+    border-radius: 999px;
+    height: 14px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #3ad1f0, #6f55ff);
+    transition: width 0.7s ease;
+}
+
+.progress-summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.95rem;
+    color: #4e5f8d;
+    font-weight: 600;
+}
+
+.dashboard-charts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-lists {
+    grid-template-columns: 1.5fr 1fr;
+}
+
+.table-card,
+.commands-card {
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(61, 92, 214, 0.14);
+    border-radius: 18px;
+    padding: 1.3rem;
+    box-shadow: 0 16px 34px rgba(24, 41, 98, 0.08);
+}
+
+.table-card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-card thead th {
+    text-align: left;
+    padding-bottom: 0.8rem;
+    color: #4c5b8a;
+    border-bottom: 1px solid rgba(92, 117, 200, 0.14);
+}
+
+.table-card tbody tr:hover {
+    background: rgba(74, 118, 243, 0.05);
+}
+
+.table-card td {
+    padding: 0.95rem 0;
+    color: #2b3764;
+    border-bottom: 1px solid rgba(92, 117, 200, 0.08);
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+.top-commands {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.2rem;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.top-commands li {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(92, 117, 200, 0.12);
+    color: #2f3f74;
+}
+
+.command-name {
+    font-weight: 700;
+}
+
+.command-count,
+.command-rate {
+    font-size: 0.95rem;
+    color: #5a6b9b;
+}
+
+.empty-state {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 14px;
+    background: rgba(224, 233, 255, 0.8);
+    color: #3c4d84;
+    display: none;
+}
+
+.dashboard-loader {
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.92);
+    gap: 1rem;
+    border-radius: 24px;
+}
+
+.loader-circle {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 4px solid rgba(111, 85, 255, 0.25);
+    border-left-color: #5b48ff;
+    animation: loader-spin 1s linear infinite;
+}
+
+@keyframes loader-spin {
+    to { transform: rotate(360deg); }
+}
+
+body.loading .dashboard {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-top,
+    .dashboard-stats,
+    .dashboard-charts,
+    .dashboard-lists {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .plan-funnel-card,
+    .progress-panel,
+    .table-card,
+    .commands-card {
+        padding: 1.2rem;
+    }
+
+    .top-commands li {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-loader {
+        border-radius: 0;
+    }
+
+    .account-meta p,
+    .command-count,
+    .command-rate {
+        font-size: 0.95rem;
+    }
+}
+
 /* Auth state helper classes */
 .logged-user {
     align-self: center;

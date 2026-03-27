@@ -52,9 +52,17 @@ async function initAuthHeader() {
         if (res.ok) {
             const user = await res.json();
             authContainer.innerHTML = `
-                <li><a href="/dashboard" class="btn-primary">Dashboard</a></li>
-                <li><a href="/logout" class="btn-secondary">Logout</a></li>
-                <li class="logged-user">${user.username}</li>
+                <li class="user-dropdown">
+                    <button id="user-menu-button" type="button">
+                        <img src="${user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128` : 'images/default-avatar.png'}" alt="${user.username} avatar">
+                        <span>${user.username}</span>
+                        <span class="chevron">▾</span>
+                    </button>
+                    <div class="user-menu" id="user-menu">
+                        <a href="/dashboard">Dashboard</a>
+                        <a href="/logout">Logout</a>
+                    </div>
+                </li>
             `;
             document.body.classList.add('logged-in');
             // Show dashboard button, hide login button in hero
@@ -62,6 +70,23 @@ async function initAuthHeader() {
             const heroDashboard = document.getElementById('hero-dashboard');
             if (heroLogin) heroLogin.style.display = 'none';
             if (heroDashboard) heroDashboard.style.display = 'inline-block';
+
+            const userButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+            const userDropdown = document.querySelector('.user-dropdown');
+
+            if (userButton && userMenu) {
+                userButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    userMenu.classList.toggle('active');
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!userDropdown?.contains(event.target)) {
+                        userMenu.classList.remove('active');
+                    }
+                });
+            }
         } else {
             authContainer.innerHTML = `<li><a href="/login" class="btn-primary">Login</a></li>`;
             document.body.classList.remove('logged-in');

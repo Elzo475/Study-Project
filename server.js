@@ -38,6 +38,55 @@ app.use(session({
     }
 }));
 
+const { getUserStats, getRecentSessions, getCommandUsage } = require('./stats');
+const { getCollection } = require('./db');
+
+app.get('/api/user/:discordId', async (req, res) => {
+    try {
+        const discordId = req.params.discordId;
+
+        const user = await getUserStats(discordId);
+
+        const dailyStats = await getCollection('daily_stats')
+            .find({ discordId })
+            .sort({ date: 1 })
+            .toArray();
+
+        res.json({
+            user,
+            dailyStats
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+app.get('/api/stats', async (req, res) => {
+    if (!req.session.user) return res.status(401).json({ error: 'Not logged in' });
+
+    const discordId = req.session.user.id;
+
+    try {
+        const sessions = await getRecentSessions(discordId, 7);
+        const commandUsage = await getCommandUsage(discordId);
+        const dailyStats = await getCollection('daily_stats')
+            .find({ discordId })
+            .sort({ date: 1 })
+            .toArray();
+
+        res.json({
+            sessions,
+            commandUsage,
+            dailyStats
+        });
+    } catch (err) {
+        console.error('Unable to load dashboard stats:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // Helper
 function isLoggedIn(req, res, next) {
     if (req.session.user) return next();
@@ -99,17 +148,44 @@ app.get('/dashboard', isLoggedIn, (req, res) => {
 });
 
 // API for frontend
-app.get('/api/user', (req, res) => {
+app.get('/api/user', async (req, res) => {
     if (!req.session.user) return res.status(401).json({ error: 'Not logged in' });
 
-    const defaultUser = {
-        id: req.session.user.id,
-        username: req.session.user.username,
-        avatar: req.session.user.avatar,
-        premium: false
+    const discordId = req.session.user.id;
+    let userStats = null;
+    let dailyStats = [];
+    let premiumUsers = 0;
+    const botStats = {
+        totalServers: 22,
+        totalCommands: 750,
+        premiumUsers: 0
     };
 
-    return res.json(defaultUser);  // for now, just basic
+    try {
+        userStats = await getUserStats(discordId);
+        dailyStats = await getCollection('daily_stats')
+            .find({ discordId })
+            .sort({ date: 1 })
+            .toArray();
+
+        premiumUsers = await getCollection('users').countDocuments({ premium: true });
+        botStats.premiumUsers = premiumUsers;
+    } catch (err) {
+        console.warn('Unable to load MongoDB stats:', err?.message || err);
+    }
+
+    res.json({
+        id: discordId,
+        username: req.session.user.username,
+        avatar: req.session.user.avatar,
+        premium: Boolean(userStats?.premium),
+        email: userStats?.email || req.session.user.email || 'Not shared',
+        roles: userStats?.roles || ['Student'],
+        planExpires: userStats?.plan_expiry || 'No expiry set',
+        userStats: userStats || {},
+        dailyStats,
+        botStats
+    });
 });
 
 // Logout

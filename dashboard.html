@@ -27,26 +27,152 @@
 </header>
 
 <section class="dashboard container" id="dashboard">
-    <div class="dashboard-overview">
-        <div class="profile-card">
-            <img id="avatar" src="" alt="User Avatar" class="avatar">
-            <h1 id="username">Hello, Guest</h1>
-            <p><strong>Discord ID:</strong> <span id="discord-id">--</span></p>
+    <div class="dashboard-loader" id="dashboard-loader">
+        <div class="loader-circle"></div>
+        <p>Loading your dashboard...</p>
+    </div>
+
+    <div class="dashboard-top">
+        <article class="profile-card account-card">
+            <div class="account-card-head">
+                <div class="account-identity">
+                    <img id="avatar" src="" alt="User Avatar" class="avatar">
+                    <div>
+                        <h1 id="username">Hello, Guest</h1>
+                        <p id="account-plan-label" class="account-plan-label">Free plan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="account-meta">
+                <p><strong>Discord ID:</strong> <span id="discord-id">--</span></p>
+                <p><strong>Email:</strong> <span id="account-email">Not shared</span></p>
+                <p><strong>Role:</strong> <span id="account-roles">Student</span></p>
+            </div>
             <p id="premium-text">Checking premium status...</p>
             <div class="dashboard-actions">
                 <a id="btn-update-plan" class="btn-primary" href="#">Upgrade to Premium</a>
                 <a href="/logout" class="btn-secondary">Logout</a>
             </div>
+            <div class="account-links">
+                <a id="btn-manage-subscription" href="#manage" class="link-secondary">Manage subscription</a>
+                <a id="btn-billing" href="#billing" class="link-secondary">Billing</a>
+            </div>
+        </article>
+
+        <article class="plan-funnel-card">
+            <div class="card-header">
+                <div>
+                    <h2>Premium funnel</h2>
+                    <p class="funnel-copy">Unlock analytics, session history, command insights, and priority support.</p>
+                </div>
+                <span class="plan-chip" id="plan-status">Free</span>
+            </div>
+            <ul class="funnel-list" id="premium-benefits-list">
+                <li>Unlimited bot commands</li>
+                <li>Detailed progress charts</li>
+                <li>Session history and timestamps</li>
+                <li>Priority support access</li>
+            </ul>
+            <div class="funnel-footer">
+                <span id="plan-expiry">Next billing: N/A</span>
+                <a id="btn-manage-plan" class="btn-primary" href="#">Manage plan</a>
+            </div>
+        </article>
+    </div>
+
+    <div class="dashboard-stats">
+        <div class="stats-grid">
+            <article class="stat-card">
+                <h3>Total sessions</h3>
+                <p id="stat-sessions">0</p>
+            </article>
+            <article class="stat-card">
+                <h3>Total hours</h3>
+                <p id="stat-hours">0</p>
+            </article>
+            <article class="stat-card">
+                <h3>Current streak</h3>
+                <p id="stat-current-streak">0</p>
+            </article>
+            <article class="stat-card">
+                <h3>Longest streak</h3>
+                <p id="stat-longest-streak">0</p>
+            </article>
+            <article class="stat-card">
+                <h3>Total servers</h3>
+                <p id="stat-servers">0</p>
+            </article>
+            <article class="stat-card">
+                <h3>Total commands</h3>
+                <p id="stat-commands">0</p>
+            </article>
+            <article class="stat-card">
+                <h3>Premium users</h3>
+                <p id="stat-premium-users">0</p>
+            </article>
         </div>
 
-        <div class="stats-card">
-            <h2>Bot Status</h2>
-            <ul id="bot-stats" class="stat-list">
-                <li>Total servers: <span id="stat-servers">1</span></li>
-                <li>Commands used today: <span id="stat-commands">0</span></li>
-                <li>Premium users in guild: <span id="stat-premium-users">0</span></li>
-            </ul>
-        </div>
+        <article class="progress-panel">
+            <div class="progress-panel-header">
+                <div>
+                    <h2>Goal progress</h2>
+                    <p><span id="goal-completion">0%</span> complete of <span id="goal-target">100h</span> monthly target</p>
+                </div>
+            </div>
+            <div class="progress-track">
+                <div class="progress-bar" id="goal-progress"></div>
+            </div>
+            <div class="progress-summary">
+                <span>Last 7 days: <strong id="weekly-hours">0h</strong></span>
+                <span>Monthly total: <strong id="monthly-hours">0h</strong></span>
+            </div>
+        </article>
+    </div>
+
+    <div class="dashboard-charts">
+        <article class="chart-card">
+            <div class="chart-card-header">
+                <h2>Daily progress</h2>
+            </div>
+            <canvas id="dailyChart" width="400" height="220"></canvas>
+        </article>
+        <article class="chart-card">
+            <div class="chart-card-header">
+                <h2>Weekly streak</h2>
+            </div>
+            <canvas id="streakChart" width="400" height="220"></canvas>
+        </article>
+    </div>
+
+    <div class="dashboard-lists">
+        <article class="table-card">
+            <div class="card-header">
+                <h2>Last 7 sessions</h2>
+            </div>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Activity</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody id="session-history"></tbody>
+                </table>
+            </div>
+            <div class="empty-state" id="session-empty">No recent sessions found. Start a new study session with the bot.</div>
+        </article>
+
+        <article class="chart-card commands-card">
+            <div class="card-header">
+                <h2>Command analytics</h2>
+            </div>
+            <div class="command-panel">
+                <ul class="top-commands" id="top-commands"></ul>
+            </div>
+            <canvas id="commandChart" width="400" height="220"></canvas>
+        </article>
     </div>
 
     <div class="plans-section">
@@ -88,22 +214,39 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-async function loadDashboard() {
-    try {
-        const res = await fetch('/api/user');
-        if (!res.ok) return window.location.href = '/login';
+document.body.classList.add('loading');
 
-        const user = await res.json();
+async function loadDashboard() {
+    const loader = document.getElementById('dashboard-loader');
+    try {
+        const [userRes, statsRes] = await Promise.all([
+            fetch('/api/user'),
+            fetch('/api/stats')
+        ]);
+
+        if (!userRes.ok) return window.location.href = '/login';
+        if (!statsRes.ok) throw new Error('Unable to fetch dashboard statistics');
+
+        const user = await userRes.json();
+        const dashboard = await statsRes.json();
+
         document.getElementById('username').textContent = user.username;
         document.getElementById('avatar').src = user.avatar
             ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
             : 'images/default-avatar.png';
         document.getElementById('discord-id').textContent = user.id;
+        document.getElementById('account-email').textContent = user.email || 'Not shared';
+        document.getElementById('account-roles').textContent = Array.isArray(user.roles) ? user.roles.join(', ') : user.roles;
+        document.getElementById('account-plan-label').textContent = user.premium ? 'Premium plan' : 'Free plan';
+        document.getElementById('plan-status').textContent = user.premium ? 'Premium' : 'Free';
+        document.getElementById('plan-expiry').textContent = user.planExpires ? `Next billing: ${user.planExpires}` : 'Next billing: N/A';
 
         const premiumText = document.getElementById('premium-text');
         const premiumBadge = document.getElementById('premium-badge');
         const upgradeBtn = document.getElementById('btn-update-plan');
+        const managePlanBtn = document.getElementById('btn-manage-plan');
 
         if (user.premium) {
             premiumText.textContent = 'You have premium access. Enjoy all advanced bot commands!';
@@ -114,6 +257,7 @@ async function loadDashboard() {
                 e.preventDefault();
                 alert('Premium already active. Contact support for plan changes.');
             };
+            managePlanBtn.textContent = 'Manage your plan';
         } else {
             premiumText.textContent = 'Free plan active. Upgrade for more features.';
             premiumBadge.style.display = 'none';
@@ -123,15 +267,168 @@ async function loadDashboard() {
                 e.preventDefault();
                 window.location.href = '/#join';
             };
+            managePlanBtn.textContent = 'Upgrade now';
         }
 
-        document.getElementById('stat-servers').textContent = 22;
-        document.getElementById('stat-commands').textContent = 750;
-        document.getElementById('stat-premium-users').textContent = 34;
-
         document.getElementById('premium-plan').classList.toggle('plan-active', Boolean(user.premium));
+
+        const stats = user.userStats || {};
+        const botStats = user.botStats || {};
+
+        document.getElementById('stat-sessions').textContent = stats.total_sessions || 0;
+        document.getElementById('stat-hours').textContent = Number(stats.total_hours || 0).toFixed(1);
+        document.getElementById('stat-current-streak').textContent = stats.streak || 0;
+        document.getElementById('stat-longest-streak').textContent = stats.longest_streak || 0;
+
+        document.getElementById('stat-servers').textContent = botStats.totalServers || 0;
+        document.getElementById('stat-commands').textContent = botStats.totalCommands || 0;
+        document.getElementById('stat-premium-users').textContent = botStats.premiumUsers || 0;
+
+        const allDailyStats = Array.isArray(dashboard.dailyStats) ? dashboard.dailyStats : [];
+        const dailyLabels = allDailyStats.map(entry => {
+            if (!entry?.date) return '';
+            const date = new Date(entry.date);
+            return isNaN(date) ? entry.date : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        });
+        const dailyValues = allDailyStats.map(entry => Number(entry.hours || 0));
+
+        const last7Stats = allDailyStats.slice(-7);
+        const streakLabels = last7Stats.map(entry => {
+            const date = new Date(entry.date);
+            return isNaN(date) ? entry.date : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        });
+        const streakValues = last7Stats.map(entry => Number(entry.hours || 0));
+
+        const weeklyHours = last7Stats.reduce((sum, entry) => sum + Number(entry.hours || 0), 0);
+        const monthlyHours = allDailyStats.reduce((sum, entry) => sum + Number(entry.hours || 0), 0);
+
+        const goalHours = Number(stats.goal_hours || 100);
+        const totalHours = Number(stats.total_hours || 0);
+        const goalPercent = goalHours ? Math.min(100, Math.round((totalHours / goalHours) * 100)) : 0;
+
+        document.getElementById('goal-completion').textContent = `${goalPercent}%`;
+        document.getElementById('goal-target').textContent = `${goalHours}h`;
+        document.getElementById('weekly-hours').textContent = `${weeklyHours.toFixed(1)}h`;
+        document.getElementById('monthly-hours').textContent = `${monthlyHours.toFixed(1)}h`;
+        document.getElementById('goal-progress').style.width = `${goalPercent}%`;
+
+        const sessions = Array.isArray(dashboard.sessions) ? dashboard.sessions : [];
+        const sessionBody = document.getElementById('session-history');
+        const sessionEmpty = document.getElementById('session-empty');
+
+        if (sessions.length) {
+            sessionBody.innerHTML = sessions.map(session => {
+                const started = new Date(session.start);
+                const dateLabel = isNaN(started) ? session.start : started.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+                return `
+                    <tr>
+                        <td>${dateLabel}</td>
+                        <td>${session.activity || 'Study session'}</td>
+                        <td>${session.durationMinutes || 0} min</td>
+                    </tr>
+                `;
+            }).join('');
+            sessionEmpty.style.display = 'none';
+        } else {
+            sessionBody.innerHTML = '';
+            sessionEmpty.style.display = 'block';
+        }
+
+        const commandUsage = Array.isArray(dashboard.commandUsage) ? dashboard.commandUsage : [];
+        const topCommands = document.getElementById('top-commands');
+        if (commandUsage.length) {
+            topCommands.innerHTML = commandUsage.slice(0, 5).map(command => `
+                <li>
+                    <span class="command-name">${command.command}</span>
+                    <span class="command-count">${command.count} uses</span>
+                    <span class="command-rate">${Math.round((command.successRate || 0) * 100)}% success</span>
+                </li>
+            `).join('');
+        } else {
+            topCommands.innerHTML = '<li>No command analytics available yet.</li>';
+        }
+
+        if (typeof Chart !== 'undefined' && dailyLabels.length) {
+            const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+            new Chart(dailyCtx, {
+                type: 'line',
+                data: {
+                    labels: dailyLabels,
+                    datasets: [{
+                        label: 'Hours Studied',
+                        data: dailyValues,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.18)',
+                        pointRadius: 4,
+                        tension: 0.25,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    }
+                }
+            });
+        }
+
+        if (typeof Chart !== 'undefined' && streakLabels.length) {
+            const streakCtx = document.getElementById('streakChart').getContext('2d');
+            new Chart(streakCtx, {
+                type: 'bar',
+                data: {
+                    labels: streakLabels,
+                    datasets: [{
+                        label: 'Last 7 days',
+                        data: streakValues,
+                        backgroundColor: 'rgba(111, 85, 255, 0.8)',
+                        borderRadius: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    }
+                }
+            });
+        }
+
+        if (typeof Chart !== 'undefined' && commandUsage.length) {
+            const commandCtx = document.getElementById('commandChart').getContext('2d');
+            new Chart(commandCtx, {
+                type: 'bar',
+                data: {
+                    labels: commandUsage.map(item => item.command),
+                    datasets: [{
+                        label: 'Command uses',
+                        data: commandUsage.map(item => item.count),
+                        backgroundColor: 'rgba(74, 144, 226, 0.85)',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        if (loader) loader.style.display = 'none';
+        document.body.classList.remove('loading');
     } catch (err) {
         console.error('Error loading dashboard:', err);
+        if (loader) loader.style.display = 'none';
+        document.body.classList.remove('loading');
         window.location.href = '/login';
     }
 }
