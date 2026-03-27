@@ -1,55 +1,139 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BrainHive Dashboard</title>
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainHive Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header>
     <div class="container">
         <a href="index.html" class="logo"><img src="images/logo.png" alt="BrainHive logo" class="logo-img"><span>BrainHive</span></a>
         <nav>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li id="premium-status"></li>
-                <li><a href="/logout" class="btn-primary">Logout</a></li>
+            <ul class="nav-links" id="dashboard-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="https://discord.gg/UcZVNb9fXq" class="btn-primary">Join Discord</a></li>
+                <span id="auth-controls"></span>
             </ul>
         </nav>
+        <div class="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
 </header>
 
-<section class="dashboard container">
-    <h1>Welcome, <span id="username"></span>!</h1>
-    <img id="avatar" src="" alt="User Avatar" style="border-radius:50%;width:120px;height:120px;margin:1rem 0;">
-    <p>Your Discord ID: <span id="discord-id"></span></p>
-    <p id="premium-text"></p>
-    <button id="buy-premium" class="btn-primary">Buy Premium</button>
+<section class="dashboard container" id="dashboard">
+    <div class="dashboard-overview">
+        <div class="profile-card">
+            <img id="avatar" src="" alt="User Avatar" class="avatar">
+            <h1 id="username">Hello, Guest</h1>
+            <p><strong>Discord ID:</strong> <span id="discord-id">--</span></p>
+            <p id="premium-text">Checking premium status...</p>
+            <div class="dashboard-actions">
+                <a id="btn-update-plan" class="btn-primary" href="#">Upgrade to Premium</a>
+                <a href="/logout" class="btn-secondary">Logout</a>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <h2>Bot Status</h2>
+            <ul id="bot-stats" class="stat-list">
+                <li>Total servers: <span id="stat-servers">1</span></li>
+                <li>Commands used today: <span id="stat-commands">0</span></li>
+                <li>Premium users in guild: <span id="stat-premium-users">0</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="plans-section">
+        <h2>Plan Features</h2>
+        <div class="plan-grid">
+            <article class="plan-card plan-free">
+                <h3>Free Plan</h3>
+                <p class="plan-brief">Core bot commands & daily usage limits</p>
+                <ul class="feature-list" id="free-features">
+                    <li>✅ Help, ping, stats</li>
+                    <li>✅ Study timer</li>
+                    <li>✅ Role-based access</li>
+                    <li>✅ 5 bot commands / day</li>
+                </ul>
+            </article>
+            <article class="plan-card plan-premium" id="premium-plan">
+                <h3>Premium Plan</h3>
+                <p class="plan-brief">All free features + exclusive enhancements</p>
+                <ul class="feature-list" id="premium-features">
+                    <li>✅ Unlimited bot commands</li>
+                    <li>✅ Advanced moderation tools</li>
+                    <li>✅ Custom command presets</li>
+                    <li>✅ Priority support</li>
+                </ul>
+                <div class="premium-badge" id="premium-badge">Premium Active</div>
+            </article>
+        </div>
+    </div>
 </section>
 
+<footer>
+    <div class="container footer-container">
+        <p>&copy; 2026 BrainHive. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
 <script>
 async function loadDashboard() {
-    const res = await fetch('/api/user'); // new endpoint to get session info
-    if (!res.ok) return window.location.href = '/login';
-    const user = await res.json();
+    try {
+        const res = await fetch('/api/user');
+        if (!res.ok) return window.location.href = '/login';
 
-    document.getElementById('username').textContent = user.username;
-    document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-    document.getElementById('discord-id').textContent = user.id;
+        const user = await res.json();
+        document.getElementById('username').textContent = user.username;
+        document.getElementById('avatar').src = user.avatar
+            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
+            : 'images/default-avatar.png';
+        document.getElementById('discord-id').textContent = user.id;
 
-    // Check premium status
-    if (user.premium) {
-        document.getElementById('premium-text').textContent = "You are a Premium member!";
-        document.getElementById('buy-premium').style.display = 'none';
-    } else {
-        document.getElementById('premium-text').textContent = "You are not a Premium member.";
-        document.getElementById('buy-premium').style.display = 'inline-block';
+        const premiumText = document.getElementById('premium-text');
+        const premiumBadge = document.getElementById('premium-badge');
+        const upgradeBtn = document.getElementById('btn-update-plan');
+
+        if (user.premium) {
+            premiumText.textContent = 'You have premium access. Enjoy all advanced bot commands!';
+            premiumBadge.style.display = 'inline-block';
+            upgradeBtn.textContent = 'Manage Premium';
+            upgradeBtn.href = '#';
+            upgradeBtn.onclick = (e) => {
+                e.preventDefault();
+                alert('Premium already active. Contact support for plan changes.');
+            };
+        } else {
+            premiumText.textContent = 'Free plan active. Upgrade for more features.';
+            premiumBadge.style.display = 'none';
+            upgradeBtn.textContent = 'Upgrade to Premium';
+            upgradeBtn.href = '/#join';
+            upgradeBtn.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = '/#join';
+            };
+        }
+
+        document.getElementById('stat-servers').textContent = 22;
+        document.getElementById('stat-commands').textContent = 750;
+        document.getElementById('stat-premium-users').textContent = 34;
+
+        document.getElementById('premium-plan').classList.toggle('plan-active', Boolean(user.premium));
+    } catch (err) {
+        console.error('Error loading dashboard:', err);
+        window.location.href = '/login';
     }
-
-    document.getElementById('buy-premium').addEventListener('click', () => {
-        alert('Here we will open Stripe/PayPal checkout in next step.');
-    });
 }
 
 loadDashboard();

@@ -19,11 +19,11 @@
                 <span>BrainHive</span>
             </a>
             <nav>
-                <ul class="nav-links">
+                <ul class="nav-links" id="main-nav">
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="https://discord.gg/UcZVNb9fXq" class="btn-primary">Join Now</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="https://discord.gg/UcZVNb9fXq" class="btn-primary">Join Discord</a></li>
+                    <span id="auth-controls"></span>
                 </ul>
             </nav>
             <div class="mobile-menu">
@@ -37,38 +37,36 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Welcome to BrainHive</h1>
-            <p>Your ultimate online community for learning, working, and collaboration.</p>
-            <a href="#join" class="btn-primary btn-hero">Get Started</a>
+            <h1>BrainHive — Discord Study and Bot Dashboard</h1>
+            <p>Login with Discord to access your dashboard, sync your plan, and unlock premium bot features.</p>
+            <div class="hero-actions">
+                <a id="hero-login" href="/login" class="btn-primary btn-hero">Login with Discord</a>
+                <a id="hero-dashboard" href="/dashboard.html" class="btn-primary btn-hero secondary">Open Dashboard</a>
+            </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features">
+    <section class="features" id="features">
         <div class="container">
-            <h2>Built for Serious Students</h2>
+            <h2>What BrainHive Offers</h2>
             <div class="feature-grid">
-
                 <div class="feature-card">
-                    <h3>Focused Study Environment</h3>
-                    <p>Join distraction-free study channels designed to help you stay consistent and productive every day.</p>
+                    <h3>Discord OAuth Login</h3>
+                    <p>Secure Discord login with session-based auth, supporting premium membership checks.</p>
                 </div>
-
                 <div class="feature-card">
-                    <h3>Structured Subjects</h3>
-                    <p>Access dedicated spaces for math, physics, chemistry, programming, and more â€” all organized for efficient learning.</p>
+                    <h3>Smart Dashboard</h3>
+                    <p>Access your personalized dashboard with bot controls, live stats, and plan info.</p>
                 </div>
-
                 <div class="feature-card">
-                    <h3>Account & Progress System</h3>
-                    <p>Create an account, track your activity, and stay accountable as you improve your skills over time.</p>
+                    <h3>Free & Premium Sync</h3>
+                    <p>Plan-specific features are synced in real-time with your Discord account status.</p>
                 </div>
-
                 <div class="feature-card">
-                    <h3>Real Community Support</h3>
-                    <p>Ask questions, get help, and collaborate with motivated students from around the world.</p>
+                    <h3>Community Focus</h3>
+                    <p>Join our Discord community for support, events, and study sprints.</p>
                 </div>
-
             </div>
         </div>
     </section>
@@ -76,9 +74,9 @@
     <!-- Call to Action -->
     <section class="cta" id="join">
         <div class="container">
-            <h2>Ready to join the community?</h2>
-            <p>Create an account and start learning with us today!</p>
-            <a href="https://discord.gg/UcZVNb9fXq" class="btn-primary btn-cta">Join Now</a>
+            <h2>Join BrainHive Discord Community</h2>
+            <p>Enter the server now to begin with the bot, learn, and collaborate.</p>
+            <a href="https://discord.gg/UcZVNb9fXq" class="btn-primary btn-cta">Join Discord Server</a>
         </div>
     </section>
 

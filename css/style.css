@@ -354,3 +354,121 @@ footer .footer-group-title {
     }
 }
 
+/* -------------------------------------------------------- */
+/* Dashboard Layout and Plan Feature Styles */
+.dashboard {
+    padding: 3rem 0; 
+    display: grid;
+    gap: 1.6rem;
+}
+.dashboard-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 1rem;
+}
+.profile-card, .stats-card {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(49, 82, 183, 0.2);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 14px 26px rgba(15, 27, 76, 0.11);
+}
+.profile-card h1 {
+    margin: 0.8rem 0 0.4rem;
+    font-size: 1.7rem;
+}
+.avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 3px solid #5e74f2;
+}
+.dashboard-actions {
+    margin-top: 0.9rem;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+.btn-secondary {
+    background: #fff;
+    border: 1px solid #5e74f2;
+    color: #2a3c7d;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.btn-secondary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(20, 54, 128, 0.2);
+}
+.stat-list {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.7;
+    color: #3f4b7b;
+}
+.plans-section {
+    margin-top: 1.7rem;
+}
+.plan-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+}
+.plan-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 30px rgba(57, 93, 214, 0.2);
+}
+.plan-card h3 {
+    margin-bottom: 0.2rem;
+}
+.plan-card p.plan-brief {
+    margin: 0.4rem 0 1em;
+    color: #566a97;
+}
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+.feature-list li {
+    margin: 0.4rem 0;
+    color: #2c3f6e;
+}
+.plan-premium {
+    border: 2px solid #6f55ff;
+    background: linear-gradient(145deg, rgba(139,100,255,0.12), #f4f4ff);
+}
+.plan-active {
+    box-shadow: 0 0 0 2px rgba(111, 85, 255, 0.35), 0 8px 22px rgba(72,90,188,0.16);
+}
+.premium-badge {
+    margin-top: 0.8rem;
+    display: none;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    color: #fff;
+    background: linear-gradient(120deg, #5b48ff, #1e68f8);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+/* Auth state helper classes */
+.logged-user {
+    align-self: center;
+    color: #1f2a4e;
+    font-weight: 600;
+    margin-left: 0.75rem;
+}
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.btn-hero.secondary {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.44);
+}
