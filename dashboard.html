@@ -192,26 +192,39 @@ async function loadDashboard() {
     const loader = document.getElementById('dashboard-loader');
     try {
         const fetchOptions = { credentials: 'include' };
-        const [userRes, statsRes] = await Promise.all([
-            fetch('/api/user', fetchOptions),
-            fetch('/api/stats', fetchOptions)
-        ]);
+        const userRes = await fetch('/api/user', fetchOptions);
 
-        if (!userRes.ok) return window.location.href = '/login';
+        if (!userRes.ok) {
+            return window.location.href = '/login';
+        }
 
         const user = await userRes.json();
-        let dashboard = {};
+        let dashboard = {
+            dailyStats: [],
+            sessions: [],
+            commandUsage: []
+        };
 
-        if (statsRes.ok) {
-            dashboard = await statsRes.json();
-        } else {
-            console.warn('Unable to fetch dashboard statistics, showing available user info only.');
+        try {
+            const statsRes = await fetch('/api/stats', fetchOptions);
+            if (statsRes.ok) {
+                const statsData = await statsRes.json();
+                dashboard = {
+                    dailyStats: Array.isArray(statsData.dailyStats) ? statsData.dailyStats : [],
+                    sessions: Array.isArray(statsData.sessions) ? statsData.sessions : [],
+                    commandUsage: Array.isArray(statsData.commandUsage) ? statsData.commandUsage : []
+                };
+            } else {
+                console.warn('Unable to fetch dashboard statistics, showing available user info only.');
+            }
+        } catch (err) {
+            console.warn('Dashboard stats request failed:', err);
         }
 
         document.getElementById('username').textContent = user.username;
         document.getElementById('avatar').src = user.avatar
             ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
-            : 'images/default-avatar.png';
+            : '/images/default-avatar.png';
         document.getElementById('discord-id').textContent = user.id;
         document.getElementById('account-email').textContent = user.email || 'Not shared';
         document.getElementById('account-roles').textContent = Array.isArray(user.roles) ? user.roles.join(', ') : user.roles;
@@ -400,7 +413,7 @@ async function loadDashboard() {
         console.error('Error loading dashboard:', err);
         if (loader) loader.style.display = 'none';
         document.body.classList.remove('loading');
-        window.location.href = '/login';
+        // Keep the dashboard visible if only stats fetching or rendering fails.
     }
 }
 
