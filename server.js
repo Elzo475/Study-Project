@@ -16,6 +16,7 @@ const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const BOT_API_URL = process.env.BOT_API_URL || null;
 
 // Serve the current folder (where server.js is) as static files
 app.use(express.static(path.join(__dirname)));  // <-- serve root folder
@@ -155,10 +156,13 @@ app.get('/api/user', async (req, res) => {
     let userStats = null;
     let dailyStats = [];
     let premiumUsers = 0;
-    const botStats = {
-        totalServers: 22,
-        totalCommands: 750,
-        premiumUsers: 0
+    let botStats = {
+        totalServers: 0,
+        totalCommands: 0,
+        premiumUsers: 0,
+        totalMembers: 0,
+        activeSessions: 0,
+        uptime: null
     };
 
     try {
@@ -170,6 +174,26 @@ app.get('/api/user', async (req, res) => {
 
         premiumUsers = await getCollection('users').countDocuments({ premium: true });
         botStats.premiumUsers = premiumUsers;
+
+        if (BOT_API_URL) {
+            try {
+                const botResponse = await axios.get(`${BOT_API_URL}/api/bot-status`, { timeout: 2500 });
+                if (botResponse.status === 200 && botResponse.data) {
+                    const botData = botResponse.data;
+                    botStats = {
+                        ...botStats,
+                        totalServers: botData.guildCount ?? botStats.totalServers,
+                        totalCommands: botData.totalCommands ?? botStats.totalCommands,
+                        premiumUsers: botData.premiumUsers ?? botStats.premiumUsers,
+                        totalMembers: botData.totalMembers ?? botStats.totalMembers,
+                        activeSessions: botData.activeSessions ?? botStats.activeSessions,
+                        uptime: botData.uptimeSeconds ?? botData.uptime ?? botStats.uptime
+                    };
+                }
+            } catch (error) {
+                console.warn('Unable to fetch bot metrics from BOT_API_URL:', error?.message || error);
+            }
+        }
     } catch (err) {
         console.warn('Unable to load MongoDB stats:', err?.message || err);
     }
